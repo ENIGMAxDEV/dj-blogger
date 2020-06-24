@@ -1,25 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from .models import Post
 
-posts = [
-    {
-        'title': 'عنوان التدوينة',
-        'content': 'محتوى التدوينة',
-        'date': '2020-1-1',
-        'author': 'المؤلف الاول',
-    },
-    {
-        'title': 'عنوان التدوينة',
-        'content': 'محتوى التدوينة',
-        'date': '2020-1-1',
-        'author': 'المؤلف الاول',
-    },
-]
 
 
 def home(r):
     context = {
         'title': 'الصفحة الرئيسية',
-        'posts': posts,
+        'posts': Post.objects.all()
     }
     return render(r, 'index.html', context)
 
@@ -29,3 +16,11 @@ def about(r):
         'title': 'من أنا',
     }
     return render(r, 'about.html', context)
+
+
+def post_details(r, post_id):
+    post = get_object_or_404(Post, pk = post_id)
+    context = {
+        'post': post,
+    }
+    return render(r, 'post_detail.html', context)
